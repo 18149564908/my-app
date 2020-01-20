@@ -28,6 +28,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const chalk = require('chalk')
 const postcssNormalize = require('postcss-normalize');
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin')
 
 const appPackageJson = require(paths.appPackageJson);
 
@@ -167,6 +168,8 @@ module.exports = function(webpackEnv) {
       // the line below with these two lines if you prefer the stock client:
       // require.resolve('webpack-dev-server/client') + '?/',
       // require.resolve('webpack/hot/dev-server'),
+      // 添加内容
+      'react-hot-loader/patch',
       isEnvDevelopment &&
         require.resolve('react-dev-utils/webpackHotDevClient'),
       // Finally, this is your app's code:
@@ -395,6 +398,7 @@ module.exports = function(webpackEnv) {
                         },
                       },
                     },
+                    'react-hot-loader/babel'// 添加内容
                   ],
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -715,7 +719,7 @@ module.exports = function(webpackEnv) {
         format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
         clear: false
       })
-    ].filter(Boolean),
+    ].filter(Boolean).concat(createVendorPlugins(publicPath)),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
     node: {
@@ -733,3 +737,44 @@ module.exports = function(webpackEnv) {
     performance: false,
   };
 };
+
+function pathResolve(dir) {
+  return path.resolve(__dirname, '..', dir)
+}
+
+// 检测文件或者文件夹存在
+function fsExistsSync(path) {
+  try {
+    fs.accessSync(path, fs.F_OK)
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
+const createVendorPlugins = (publicPath) => {
+  const plugins = []
+  const hasVendor = fsExistsSync('./vendor')
+  if (hasVendor) {
+    const files = fs.readdirSync(pathResolve('./vendor'))
+    files.forEach(file => {
+      if (/.*\.chunk.js/.test(file)) {
+        plugins.push(
+          new AddAssetHtmlWebpackPlugin({
+            filepath: pathResolve(`./vendor/${file}`),
+            publicPath: `${publicPath}static/js`,
+            outputPath: 'static/js'
+          })
+        )
+      }
+      if (/.*\.manifest.json/.test(file)) {
+        plugins.push(
+          new webpack.DllReferencePlugin({
+            manifest: pathResolve(`./vendor/${file}`)
+          })
+        )
+      }
+    })
+  }
+  return plugins
+}

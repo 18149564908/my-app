@@ -2,6 +2,12 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js",
+    "vendor": "webpack --config ./config/webpack.vendor.config.js"
+  },
   "dependencies": {
     "@babel/core": "7.7.4",
     "@svgr/webpack": "4.3.3",
@@ -68,11 +74,6 @@
     "webpack-dev-server": "3.9.0",
     "webpack-manifest-plugin": "2.2.0",
     "workbox-webpack-plugin": "4.3.1"
-  },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -147,6 +148,10 @@
     ]
   },
   "devDependencies": {
+    "add-asset-html-webpack-plugin": "^3.1.3",
+    "babel-plugin-import": "^1.13.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "customize-cra": "^0.9.1",
     "eslint-config-standard": "^14.1.0",
     "eslint-config-standard-react": "^9.2.0",
     "eslint-plugin-node": "^11.0.0",
@@ -155,6 +160,8 @@
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "progress-bar-webpack-plugin": "^2.1.0",
+    "react-app-rewired": "^2.1.5",
+    "react-hot-loader": "^4.12.18",
     "webpack-bundle-analyzer": "^3.6.0"
   },
   "plugins": [
@@ -163,6 +170,25 @@
       {
         "legacy": true
       }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "libraryDirectory": "es",
+        "style": "css"
+      },
+      "antd"
+    ],
+    [
+      "import",
+      {
+        "libraryName": "ant-design-pro",
+        "libraryDirectory": "lib",
+        "style": true,
+        "camel2DashComponentName": false
+      },
+      "ant-design-pro"
     ]
   ],
   "homepage": "./"
