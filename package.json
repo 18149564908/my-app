@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@babel/core": "7.7.4",
+    "@ice/store": "^0.4.6",
+    "@ice/store-logger": "^0.1.0",
     "@svgr/webpack": "4.3.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -61,6 +63,9 @@
     "react-app-polyfill": "^1.0.5",
     "react-dev-utils": "^10.0.0",
     "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.3.0",
     "resolve": "1.12.2",
     "resolve-url-loader": "3.1.1",
     "sass-loader": "8.0.0",
@@ -145,6 +150,26 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      [
+        "import",
+        {
+          "libraryName": "antd",
+          "libraryDirectory": "es",
+          "style": "css"
+        }
+      ],
+      [
+        "import",
+        {
+          "libraryName": "ant-design-pro",
+          "libraryDirectory": "lib",
+          "style": true,
+          "camel2DashComponentName": false
+        },
+        "ant-design-pro"
+      ]
     ]
   },
   "devDependencies": {
@@ -170,25 +195,6 @@
       {
         "legacy": true
       }
-    ],
-    [
-      "import",
-      {
-        "libraryName": "antd",
-        "libraryDirectory": "es",
-        "style": "css"
-      },
-      "antd"
-    ],
-    [
-      "import",
-      {
-        "libraryName": "ant-design-pro",
-        "libraryDirectory": "lib",
-        "style": true,
-        "camel2DashComponentName": false
-      },
-      "ant-design-pro"
     ]
   ],
   "homepage": "./"
