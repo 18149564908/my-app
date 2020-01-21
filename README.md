@@ -1,4 +1,4 @@
-iceStore# my-app
+# my-app
 基于create-react-app，进行再配置成适合自己的项目
 > webpack4 + react16.8 + antd + icestore
 ---
